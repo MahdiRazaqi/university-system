@@ -9,4 +9,8 @@ func Register(e *echo.Echo) {
 	teacherGroup := v1.Group("/teacher")
 	teacherGroup.POST("/register", teacherRegister)
 	teacherGroup.POST("/login", teacherLogin)
+
+	studentGroup := v1.Group("/student")
+	studentGroup.POST("/register", studentRegister)
+	studentGroup.POST("/login", studentLogin)
 }
