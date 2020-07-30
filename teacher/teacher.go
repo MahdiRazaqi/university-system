@@ -51,3 +51,14 @@ func Delete(cond interface{}, args ...interface{}) error {
 	}
 	return query.Error
 }
+
+// Mini teacher data
+func (t *Teacher) Mini() map[string]interface{} {
+	return map[string]interface{}{
+		"id":         t.Model.ID,
+		"created_at": t.Model.CreatedAt,
+		"first_name": t.FirstName,
+		"last_name":  t.LastName,
+		"teacher_id": t.TeacherID,
+	}
+}
