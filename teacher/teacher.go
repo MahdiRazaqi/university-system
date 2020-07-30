@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/MahdiRazaqi/university-system/database"
+	"github.com/jeyem/passwd"
 	"github.com/jinzhu/gorm"
 )
 
@@ -61,4 +62,24 @@ func (t *Teacher) Mini() map[string]interface{} {
 		"last_name":  t.LastName,
 		"teacher_id": t.TeacherID,
 	}
+}
+
+// LoadByTeacherID load teacher with teacher id
+func LoadByTeacherID(teacherID int) (*Teacher, error) {
+	return FindOne("teacher_id = ?", teacherID)
+}
+
+// Auth authenticate teacher with teacher id and password
+func Auth(teacherID int, password string) (*Teacher, error) {
+	err := errors.New("teacher id or password not matched")
+
+	t, err := LoadByTeacherID(teacherID)
+	if err != nil {
+		return nil, err
+	}
+
+	if !passwd.Check(password, t.Password) {
+		return nil, err
+	}
+	return t, nil
 }

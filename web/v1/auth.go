@@ -14,7 +14,7 @@ type teacherForm struct {
 }
 
 /**
-* @api {post} /api/v1/teacher/register Register teacher
+* @api {post} /api/v1/teacher/register Teacher register
 * @apiVersion 1.0.0
 * @apiName teacherRegister
 * @apiGroup Teacher
@@ -42,6 +42,37 @@ func teacherRegister(c echo.Context) error {
 		Password:  passwd.Make(formData.Password),
 	}
 	if err := t.Save(); err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	return c.JSON(200, echo.Map{
+		"message": "registered successfully",
+		"user":    t.Mini(),
+	})
+}
+
+/**
+* @api {post} /api/v1/teacher/login Teacher login
+* @apiVersion 1.0.0
+* @apiName teacherLogin
+* @apiGroup Teacher
+*
+* @apiParam {Number} teacher_id unique teacher id
+* @apiParam {String} password password
+*
+* @apiSuccess {String} message success message
+* @apiSuccess {Object} teacher teacher model
+*
+* @apiError {String} error error message
+ */
+func teacherLogin(c echo.Context) error {
+	formData := new(teacherForm)
+	if err := c.Bind(formData); err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	t, err := teacher.Auth(formData.TeacherID, formData.Password)
+	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
