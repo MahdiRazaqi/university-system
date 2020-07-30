@@ -2,21 +2,11 @@ package teacher
 
 import (
 	"errors"
-	"time"
 
-	"github.com/MahdiRazaqi/university-system/config"
 	"github.com/MahdiRazaqi/university-system/database"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/jeyem/passwd"
 	"github.com/jinzhu/gorm"
 )
-
-type customClaims struct {
-	TeacherID int `json:"teacher_id"`
-	jwt.StandardClaims
-}
-
-var signature = config.Config.SecretKey
 
 // Teacher model
 type Teacher struct {
@@ -92,14 +82,4 @@ func Auth(teacherID int, password string) (*Teacher, error) {
 		return nil, err
 	}
 	return t, nil
-}
-
-// CreateToken generate new token
-func (t *Teacher) CreateToken() (string, error) {
-	claims := new(customClaims)
-	claims.TeacherID = t.TeacherID
-	claims.ExpiresAt = time.Now().Add(time.Hour * 72).Unix()
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	return token.SignedString([]byte(signature))
 }

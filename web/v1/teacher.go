@@ -45,7 +45,7 @@ func teacherRegister(c echo.Context) error {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
-	token, err := t.CreateToken()
+	token, err := CreateToken(t.TeacherID, "teacher")
 	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
@@ -82,7 +82,7 @@ func teacherLogin(c echo.Context) error {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
-	token, err := t.CreateToken()
+	token, err := CreateToken(t.TeacherID, "teacher")
 	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
