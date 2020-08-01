@@ -162,3 +162,35 @@ func getCourse(c echo.Context) error {
 		"course": crs.Mini(),
 	})
 }
+
+/**
+* @api {get} /api/v1/course get courses list
+* @apiVersion 1.0.0
+* @apiName getCoursesList
+* @apiGroup Course
+*
+* @apiParam {Number} page list page
+* @apiParam {Number} limit list limit
+*
+* @apiSuccess {Object} course course model
+*
+* @apiError {String} error error message
+ */
+func getCoursesList(c echo.Context) error {
+	page, _ := strconv.Atoi(c.QueryParam("page"))
+	limit, _ := strconv.Atoi(c.QueryParam("limit"))
+
+	courses, err := course.Find(limit, page, "")
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	var result []map[string]interface{}
+	for _, crs := range *courses {
+		result = append(result, crs.Mini())
+	}
+
+	return c.JSON(200, echo.Map{
+		"courses": result,
+	})
+}

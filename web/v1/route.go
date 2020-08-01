@@ -25,8 +25,7 @@ func Register(e *echo.Echo) {
 	courseGroup.PUT("/:id", editCourse)
 	courseGroup.DELETE("/:id", deleteCourse)
 	courseGroup.GET("/:id", getCourse)
-	// postGroup.GET("", listMyPosts)
-
+	courseGroup.GET("", getCoursesList)
 }
 
 func userRequired(next echo.HandlerFunc) echo.HandlerFunc {
