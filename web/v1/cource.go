@@ -53,7 +53,38 @@ func addCourse(c echo.Context) error {
 	}
 
 	return c.JSON(200, echo.Map{
-		"message": "post created successfully",
+		"message": "course created successfully",
 		"course":  course.Mini(),
+	})
+}
+
+/**
+* @api {delete} /api/v1/course/:id delete course
+* @apiVersion 1.0.0
+* @apiName deleteCourse
+* @apiGroup Course
+*
+* @apiSuccess {String} message success message
+*
+* @apiError {String} error error message
+ */
+func deleteCourse(c echo.Context) error {
+	u, err := userBinding(c.Get("user"))
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	if _, ok := u["TeacherID"]; !ok {
+		return c.JSON(403, echo.Map{"error": errors.New("don't have permission").Error()})
+	}
+
+	id := c.Param("id")
+
+	if err := course.Delete("id = ?", id); err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	return c.JSON(200, echo.Map{
+		"message": "course deleted successfully",
 	})
 }

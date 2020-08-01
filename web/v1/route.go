@@ -20,11 +20,11 @@ func Register(e *echo.Echo) {
 	r := v1.Group("/")
 	r.Use(middleware.JWT([]byte(signature)), userRequired)
 
-	courceGroup := r.Group("cource")
-	courceGroup.POST("", addCourse)
+	courseGroup := r.Group("course")
+	courseGroup.POST("", addCourse)
+	courseGroup.DELETE("/:id", deleteCourse)
 	// postGroup.GET("", listMyPosts)
 	// postGroup.PUT("/:id", editPost)
-	// postGroup.DELETE("/:id", removePost)
 
 }
 
