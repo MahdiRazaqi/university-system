@@ -45,18 +45,18 @@ func addCourse(c echo.Context) error {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
-	course := &course.Course{
+	crs := &course.Course{
 		Name:     formData.Name,
 		CourseID: formData.CourseID,
 		Unit:     formData.Unit,
 	}
-	if err := course.Save(); err != nil {
+	if err := crs.Save(); err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
 	return c.JSON(200, echo.Map{
 		"message": "course created successfully",
-		"course":  course.Mini(),
+		"course":  crs.Mini(),
 	})
 }
 
@@ -65,6 +65,10 @@ func addCourse(c echo.Context) error {
 * @apiVersion 1.0.0
 * @apiName editCourse
 * @apiGroup Course
+*
+* @apiParam {String} name course name
+* @apiParam {Number} course_id course id
+* @apiParam {Number} unit course unit
 *
 * @apiSuccess {String} message success message
 * @apiSuccess {Object} course course model
@@ -88,20 +92,20 @@ func editCourse(c echo.Context) error {
 
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	course := &course.Course{
+	crs := &course.Course{
 		Model:    gorm.Model{ID: uint(id)},
 		Name:     formData.Name,
 		CourseID: formData.CourseID,
 		Unit:     formData.Unit,
 	}
 
-	if err := course.Save(); err != nil {
+	if err := crs.Save(); err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
 	return c.JSON(200, echo.Map{
 		"message": "course updated successfully",
-		"course":  course.Mini(),
+		"course":  crs.Mini(),
 	})
 }
 
@@ -125,7 +129,7 @@ func deleteCourse(c echo.Context) error {
 		return c.JSON(403, echo.Map{"error": errors.New("don't have permission").Error()})
 	}
 
-	id := c.Param("id")
+	id, _ := strconv.Atoi(c.Param("id"))
 
 	if err := course.Delete("id = ?", id); err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
@@ -133,5 +137,28 @@ func deleteCourse(c echo.Context) error {
 
 	return c.JSON(200, echo.Map{
 		"message": "course deleted successfully",
+	})
+}
+
+/**
+* @api {get} /api/v1/course/:id get one course
+* @apiVersion 1.0.0
+* @apiName getCourse
+* @apiGroup Course
+*
+* @apiSuccess {Object} course course model
+*
+* @apiError {String} error error message
+ */
+func getCourse(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	crs, err := course.FindOne("id = ?", id)
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	return c.JSON(200, echo.Map{
+		"course": crs.Mini(),
 	})
 }
