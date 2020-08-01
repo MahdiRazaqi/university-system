@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strings"
@@ -57,4 +58,17 @@ func LoadByToken(token string) (interface{}, error) {
 	}
 
 	return student.LoadByStudentID(claims.UID)
+}
+
+func userBinding(u interface{}) (map[string]interface{}, error) {
+	jsonData, err := json.Marshal(u)
+	if err != nil {
+		return nil, err
+	}
+
+	var mapData map[string]interface{}
+	if err := json.Unmarshal(jsonData, &mapData); err != nil {
+		return nil, err
+	}
+	return mapData, nil
 }

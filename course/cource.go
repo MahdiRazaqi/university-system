@@ -1,4 +1,4 @@
-package cource
+package course
 
 import (
 	"errors"
@@ -7,15 +7,15 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// Cource model
-type Cource struct {
+// Course model
+type Course struct {
 	gorm.Model
 	Name     string
-	CourceID int
+	CourseID int
 	Unit     int
 }
 
-func (c *Cource) table() *gorm.DB {
+func (c *Course) table() *gorm.DB {
 	if !database.Connection.HasTable(c) {
 		return database.Connection.CreateTable(c)
 	}
@@ -23,30 +23,41 @@ func (c *Cource) table() *gorm.DB {
 }
 
 // FindOne strudent from database
-func FindOne(cond interface{}, args ...interface{}) (*Cource, error) {
-	c := &Cource{}
+func FindOne(cond interface{}, args ...interface{}) (*Course, error) {
+	c := &Course{}
 	return c, c.table().Where(cond, args...).First(c).Error
 }
 
 // Find strudents from database
-func Find(limit int, page int, cond interface{}, args ...interface{}) (*[]Cource, error) {
-	c := &Cource{}
-	cources := &[]Cource{}
-	return cources, c.table().Where(cond, args...).Limit(limit).Offset(page - 1).Find(cources).Error
+func Find(limit int, page int, cond interface{}, args ...interface{}) (*[]Course, error) {
+	c := &Course{}
+	courses := &[]Course{}
+	return courses, c.table().Where(cond, args...).Limit(limit).Offset(page - 1).Find(courses).Error
 }
 
-// Save cource to database
-func (c *Cource) Save() error {
+// Save course to database
+func (c *Course) Save() error {
 	return c.table().Save(c).Error
 }
 
-// Delete cource from database
+// Delete course from database
 func Delete(cond interface{}, args ...interface{}) error {
-	c := &Cource{}
+	c := &Course{}
 	query := c.table().Where(cond, args...).Delete(c)
 
 	if query.Error == nil && query.RowsAffected == 0 {
 		return errors.New("record not found")
 	}
 	return query.Error
+}
+
+// Mini course data
+func (c *Course) Mini() map[string]interface{} {
+	return map[string]interface{}{
+		"id":         c.Model.ID,
+		"created_at": c.Model.CreatedAt,
+		"name":       c.Name,
+		"course_id":  c.CourseID,
+		"unit":       c.Unit,
+	}
 }

@@ -2,9 +2,8 @@ package v1
 
 import (
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
-
-// var signature = config.Config.SecretKey
 
 // Register routes
 func Register(e *echo.Echo) {
@@ -18,24 +17,21 @@ func Register(e *echo.Echo) {
 	studentGroup.POST("/register", studentRegister)
 	studentGroup.POST("/login", studentLogin)
 
-	// r := v1.Group("/")
-	// r.Use(middleware.JWT([]byte(signature)), studentRequired)
+	r := v1.Group("/")
+	r.Use(middleware.JWT([]byte(signature)), userRequired)
 
-	// postGroup := r.Group("post")
-	// postGroup.POST("", addPost)
+	courceGroup := r.Group("cource")
+	courceGroup.POST("", addCourse)
 	// postGroup.GET("", listMyPosts)
 	// postGroup.PUT("/:id", editPost)
 	// postGroup.DELETE("/:id", removePost)
 
 }
 
-// func studentRequired(next echo.HandlerFunc) echo.HandlerFunc {
-// 	return func(c echo.Context) error {
-// 		u := &user.User{}
-// 		if err := u.LoadByToken(user.GetToken(c.Request())); err != nil {
-// 			return c.JSON(400, echo.Map{"error": "loading user from token " + err.Error()})
-// 		}
-// 		c.Set("user", u)
-// 		return next(c)
-// 	}
-// }
+func userRequired(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		u, _ := LoadByToken(GetToken(c.Request()))
+		c.Set("user", u)
+		return next(c)
+	}
+}
