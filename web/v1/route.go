@@ -22,9 +22,9 @@ func Register(e *echo.Echo) {
 
 	courseGroup := r.Group("course")
 	courseGroup.POST("", addCourse)
+	courseGroup.PUT("/:id", editCourse)
 	courseGroup.DELETE("/:id", deleteCourse)
 	// postGroup.GET("", listMyPosts)
-	// postGroup.PUT("/:id", editPost)
 
 }
 

@@ -54,6 +54,7 @@ func Delete(cond interface{}, args ...interface{}) error {
 // Mini course data
 func (c *Course) Mini() map[string]interface{} {
 	return map[string]interface{}{
+		"id":         c.Model.ID,
 		"created_at": c.Model.CreatedAt,
 		"name":       c.Name,
 		"course_id":  c.CourseID,
