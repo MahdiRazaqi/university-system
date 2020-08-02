@@ -29,6 +29,7 @@ func Register(e *echo.Echo) {
 
 	presentationGroup := r.Group("presentation")
 	presentationGroup.POST("", addPresentation)
+	presentationGroup.POST("/:id", addToObtained)
 }
 
 func userRequired(next echo.HandlerFunc) echo.HandlerFunc {
