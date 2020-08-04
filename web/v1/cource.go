@@ -2,9 +2,13 @@ package v1
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/MahdiRazaqi/university-system/course"
+	"github.com/MahdiRazaqi/university-system/database"
+	"github.com/hb-go/json"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 )
@@ -179,16 +183,29 @@ func getCourse(c echo.Context) error {
 func getCoursesList(c echo.Context) error {
 	page, _ := strconv.Atoi(c.QueryParam("page"))
 	limit, _ := strconv.Atoi(c.QueryParam("limit"))
+	redisID := fmt.Sprintf("course-%v-%v", page, limit)
+	var result []map[string]interface{}
+
+	cacheData, err := database.Redis.Get(redisID).Result()
+	if err == nil {
+		json.Unmarshal([]byte(cacheData), &result)
+
+		return c.JSON(200, echo.Map{
+			"courses": result,
+		})
+	}
 
 	courses, err := course.Find(limit, page, "")
 	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
-	var result []map[string]interface{}
 	for _, crs := range *courses {
 		result = append(result, crs.Mini())
 	}
+
+	jsonData, _ := json.Marshal(result)
+	database.Redis.Set(redisID, jsonData, 1*time.Hour)
 
 	return c.JSON(200, echo.Map{
 		"courses": result,

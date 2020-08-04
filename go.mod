@@ -4,6 +4,8 @@ go 1.14
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/go-redis/redis v6.15.8+incompatible
+	github.com/hb-go/json v0.0.0-20170624084651-15ef86c8b796
 	github.com/jeyem/passwd v0.0.0-20200706085226-43b38af7a8e5
 	github.com/jinzhu/gorm v1.9.15
 	github.com/labstack/echo v3.3.10+incompatible

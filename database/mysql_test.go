@@ -6,14 +6,14 @@ import (
 	"github.com/MahdiRazaqi/university-system/config"
 )
 
-func TestConnet(t *testing.T) {
+func TestConnectToMysql(t *testing.T) {
 	path := "../config.json"
 
 	if err := config.Load(path); err != nil {
-		t.Error()
+		t.Error(err)
 	}
 
-	if err := Connect(); err != nil {
+	if err := connectToMysql(); err != nil {
 		t.Error(err)
 	}
 }

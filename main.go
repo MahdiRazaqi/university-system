@@ -12,9 +12,6 @@ func main() {
 		logrus.Error("loading config file ", err)
 	}
 
-	if err := database.Connect(); err != nil {
-		logrus.Error("connecting to database ", err)
-	}
-
+	database.Connect()
 	web.Start()
 }

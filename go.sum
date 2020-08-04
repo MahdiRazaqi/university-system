@@ -8,9 +8,13 @@ github.com/dgrijalva/jwt-go v1.0.2 h1:KPldsxuKGsS2FPWsNeg9ZO18aCrGKujPoWXn2yo+KQ
 github.com/dgrijalva/jwt-go v3.2.0+incompatible h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5/go.mod h1:a2zkGnVExMxdzMo3M0Hi/3sEU+cWnZpSni0O6/Yb/P0=
+github.com/go-redis/redis v6.15.8+incompatible h1:BKZuG6mCnRj5AOaWJXoCgf6rqTYnYJLe4en2hxT7r9o=
+github.com/go-redis/redis v6.15.8+incompatible/go.mod h1:NAIEuMOZ/fxfXJIrKDQDz8wamY7mA7PouImQ2Jvg6kA=
 github.com/go-sql-driver/mysql v1.5.0 h1:ozyZYNQW3x3HtqT1jira07DN2PArx2v7/mN66gGcHOs=
 github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
 github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe/go.mod h1:8vg3r2VgvsThLBIFL93Qb5yWzgyZWhEmBwUJWevAkK0=
+github.com/hb-go/json v0.0.0-20170624084651-15ef86c8b796 h1:5hKFj2wOUlc1+kHBXHJLgYU4CSJ3dh77AD2KUwCO8go=
+github.com/hb-go/json v0.0.0-20170624084651-15ef86c8b796/go.mod h1:om5F1+fU4K+Db/Ofe5QuuoDk0d4Nwu7ECY+gbA9CJRc=
 github.com/jeyem/passwd v0.0.0-20200706085226-43b38af7a8e5 h1:vmhQnfefoHYcq0w3bB5inKRyrpe2kFYAJeSTP44vC6o=
 github.com/jeyem/passwd v0.0.0-20200706085226-43b38af7a8e5/go.mod h1:jNSpfUjRFOAUTf+otMdN7Ughw2KwOSClbQ0ec2ygKpE=
 github.com/jinzhu/gorm v1.9.15 h1:OdR1qFvtXktlxk73XFYMiYn9ywzTwytqe4QkuMRqc38=
