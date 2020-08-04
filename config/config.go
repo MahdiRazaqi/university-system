@@ -3,8 +3,6 @@ package config
 import (
 	"encoding/json"
 	"io/ioutil"
-
-	"github.com/sirupsen/logrus"
 )
 
 type config struct {
@@ -18,19 +16,24 @@ type config struct {
 	} `json:"dbms"`
 }
 
-const configPath = "./config.json"
+var configPath = "./config.json"
 
 // Config data
 var Config config
 
 // Load config file
-func Load() {
+func Load(path ...string) error {
+	if len(path) != 0 {
+		configPath = path[0]
+	}
+
 	file, err := ioutil.ReadFile(configPath)
 	if err != nil {
-		logrus.Error("loading config file ", err)
+		return err
 	}
 
 	if err := json.Unmarshal(file, &Config); err != nil {
-		logrus.Error("loading config file ", err)
+		return err
 	}
+	return nil
 }
