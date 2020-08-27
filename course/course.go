@@ -2,7 +2,6 @@ package course
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/MahdiRazaqi/university-system/database"
 	"github.com/jinzhu/gorm"
@@ -12,7 +11,7 @@ import (
 type Course struct {
 	gorm.Model
 	Name     string
-	CourseID int
+	CourseID int `gorm:"unique;not null"`
 	Unit     int
 }
 
@@ -26,7 +25,6 @@ func (c *Course) table() *gorm.DB {
 // FindOne strudent from database
 func FindOne(cond interface{}, args ...interface{}) (*Course, error) {
 	c := &Course{}
-	fmt.Println("ss")
 	return c, c.table().Where(cond, args...).First(c).Error
 }
 

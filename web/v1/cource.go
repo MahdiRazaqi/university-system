@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/MahdiRazaqi/university-system/student"
+
 	"github.com/MahdiRazaqi/university-system/course"
 	"github.com/MahdiRazaqi/university-system/database"
 	"github.com/hb-go/json"
@@ -206,6 +208,37 @@ func getCoursesList(c echo.Context) error {
 
 	jsonData, _ := json.Marshal(result)
 	database.Redis.Set(redisID, jsonData, 1*time.Hour)
+
+	return c.JSON(200, echo.Map{
+		"courses": result,
+	})
+}
+
+/**
+* @api {get} /api/v1/course/mycourse Get my courses
+* @apiVersion 1.0.0
+* @apiName myCource
+* @apiGroup Student
+*
+* @apiSuccess {String} message success message
+* @apiSuccess {Object} course course model
+*
+* @apiError {String} error error message
+ */
+func myCource(c echo.Context) error {
+	u, err := userBinding(c.Get("user"))
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	if _, ok := u["StudentID"]; !ok {
+		return c.JSON(403, echo.Map{"error": errors.New("don't have permission").Error()})
+	}
+
+	result, err := student.FindMyCourse(fmt.Sprintf("%v", u["StudentID"]))
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
 
 	return c.JSON(200, echo.Map{
 		"courses": result,

@@ -26,6 +26,7 @@ func Register(e *echo.Echo) {
 	courseGroup.DELETE("/:id", deleteCourse)
 	courseGroup.GET("/:id", getCourse)
 	courseGroup.GET("", getCoursesList)
+	courseGroup.GET("/mycourse", myCource)
 
 	presentationGroup := r.Group("presentation")
 	presentationGroup.POST("", addPresentation)

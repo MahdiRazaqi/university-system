@@ -13,7 +13,7 @@ type Teacher struct {
 	gorm.Model
 	FirstName string
 	LastName  string
-	TeacherID int
+	TeacherID int `gorm:"unique;not null"`
 	Password  string
 }
 

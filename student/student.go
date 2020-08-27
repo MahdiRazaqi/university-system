@@ -3,6 +3,7 @@ package student
 import (
 	"errors"
 
+	"github.com/MahdiRazaqi/university-system/course"
 	"github.com/MahdiRazaqi/university-system/database"
 	"github.com/jeyem/passwd"
 	"github.com/jinzhu/gorm"
@@ -13,7 +14,7 @@ type Student struct {
 	gorm.Model
 	FirstName string
 	LastName  string
-	StudentID int
+	StudentID int `gorm:"unique;not null"`
 	Password  string
 }
 
@@ -82,4 +83,28 @@ func Auth(studentID int, password string) (*Student, error) {
 		return nil, err
 	}
 	return s, nil
+}
+
+// FindMyCourse find my select course
+func FindMyCourse(studentID string) ([]course.Course, error) {
+	rows, err := database.Connection.Raw(`
+	SELECT students.id,students.first_name,students.student_id,obtaineds.id,obtaineds.s_id,obtaineds.p_id,presentations.id,presentations.course_id,presentations.capasity,courses.id,courses.name FROM students
+	INNER JOIN obtaineds ON students.id = obtaineds.s_id
+	INNER JOIN presentations ON obtaineds.p_id = presentations.id
+	INNER JOIN courses ON presentations.course_id = courses.id
+	where students.student_id =
+	` + studentID).Rows()
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var result []course.Course
+	for rows.Next() {
+		var res course.Course
+		database.Connection.ScanRows(rows, &res)
+		result = append(result, res)
+	}
+	return result, nil
 }
